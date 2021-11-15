@@ -54,10 +54,5 @@ export default {
     Price,
   },
   props: ["cart", "cartQty", "cartTotal"],
-  filters: {
-    currencyFormat: function (value) {
-      return "Rp" + Number.parseFloat(value).toFixed(2);
-    },
-  },
 };
 </script>

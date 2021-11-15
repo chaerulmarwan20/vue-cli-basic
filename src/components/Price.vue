@@ -1,7 +1,5 @@
 <template>
-  <span>{{
-    this.prefix + Number.parseFloat(this.value).toFixed(this.precision)
-  }}</span>
+  <span>{{ this.value | currencyFormat(this.prefix, this.precision) }}</span>
 </template>
 
 <script>
@@ -16,6 +14,11 @@ export default {
     precision: {
       type: Number,
       default: 2,
+    },
+  },
+  filters: {
+    currencyFormat: function (value, prefix, precision) {
+      return prefix + Number.parseFloat(Number(value)).toFixed(precision);
     },
   },
 };
