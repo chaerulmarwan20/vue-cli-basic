@@ -1,5 +1,5 @@
 <template>
-  <span>{{ this.value | currencyFormat(this.prefix, this.precision) }}</span>
+  <span>{{ value | currencyFormat(prefix, precision) }}</span>
 </template>
 
 <script>
