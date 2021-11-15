@@ -1,31 +1,20 @@
 <template>
   <div id="app" class="container mt-3">
-    <navbar
+    <router-view
       :cart="cart"
       :cartQty="cartQty"
       :cartTotal="cartTotal"
+      :maximum.sync="maximum"
+      :products="products"
+      :sliderStatus="sliderStatus"
       @toggle="toggleSliderStatus"
       @delete="deleteItem"
-    ></navbar>
-    <h1>ARL Shop</h1>
-    <price-slider
-      :sliderStatus="sliderStatus"
-      :maximum.sync="maximum"
-    ></price-slider>
-    <product-list
-      :products="products"
-      :maximum="maximum"
       @add="addItem"
-    ></product-list>
-    <font-awesome-icon icon="shopping-cart"></font-awesome-icon>
+    ></router-view>
   </div>
 </template>
 
 <script>
-import Navbar from "./components/Navbar.vue";
-import PriceSlider from "./components/PriceSlider.vue";
-import ProductList from "./components/ProductList.vue";
-
 export default {
   name: "App",
   data: function () {
@@ -35,11 +24,6 @@ export default {
       cart: [],
       sliderStatus: false,
     };
-  },
-  components: {
-    Navbar,
-    PriceSlider,
-    ProductList,
   },
   computed: {
     cartTotal: function () {

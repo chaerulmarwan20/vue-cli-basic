@@ -7,13 +7,16 @@
     @leave="leave"
   >
     <div
-      class="row d-none mb-3 align-items-center"
+      class="row mb-3 align-items-center"
       v-for="(item, index) in showItem"
       :key="item.id"
       :data-index="index"
     >
       <div class="col-1 m-auto">
-        <button class="btn btn-info text-white" @click="$emit('add', item)">
+        <button
+          class="btn btn-info text-white"
+          @click="$emit('add-item', item)"
+        >
           +
         </button>
       </div>
