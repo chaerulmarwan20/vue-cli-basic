@@ -1,22 +1,88 @@
 <template>
-  <div id="app" class="container mt-5">
+  <div id="app" class="container mt-3">
+    <navbar
+      :cart="cart"
+      :cartQty="cartQty"
+      :cartTotal="cartTotal"
+      @toggle="toggleSliderStatus"
+      @delete="deleteItem"
+    ></navbar>
     <h1>ARL Shop</h1>
-    <p class="animate__animated animate__fadeInRight">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat a
-      blanditiis ullam sed voluptatibus ea commodi rerum tempore molestiae quam
-      optio aut, iure ducimus aperiam qui, voluptate minus similique veritatis.
-    </p>
+    <price-slider
+      :sliderStatus="sliderStatus"
+      :maximum.sync="maximum"
+    ></price-slider>
+    <product-list
+      :products="products"
+      :maximum="maximum"
+      @add="addItem"
+    ></product-list>
     <font-awesome-icon icon="shopping-cart"></font-awesome-icon>
   </div>
 </template>
 
 <script>
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import Navbar from "./components/Navbar.vue";
+import PriceSlider from "./components/PriceSlider.vue";
+import ProductList from "./components/ProductList.vue";
 
 export default {
   name: "App",
+  data: function () {
+    return {
+      maximum: 50,
+      products: [],
+      cart: [],
+      sliderStatus: false,
+    };
+  },
   components: {
-    FontAwesomeIcon,
+    Navbar,
+    PriceSlider,
+    ProductList,
+  },
+  computed: {
+    cartTotal: function () {
+      let sum = 0;
+      for (const key in this.cart) {
+        sum = sum + this.cart[key].product.price * this.cart[key].qty;
+      }
+      return sum;
+    },
+    cartQty: function () {
+      let qty = 0;
+      for (const key in this.cart) {
+        qty = qty + this.cart[key].qty;
+      }
+      return qty;
+    },
+  },
+  mounted: function () {
+    fetch("https://hplussport.com/api/products/order/price")
+      .then((res) => res.json())
+      .then((data) => {
+        this.products = data;
+      });
+  },
+  methods: {
+    toggleSliderStatus: function () {
+      this.sliderStatus = !this.sliderStatus;
+    },
+    addItem: function (product) {
+      let productIndex;
+      const productExist = this.cart.filter((item, index) => {
+        if (Number(item.product.id) === Number(product.id)) {
+          productIndex = index;
+          return true;
+        } else return false;
+      });
+      if (productExist.length) this.cart[productIndex].qty++;
+      else this.cart.push({ product, qty: 1 });
+    },
+    deleteItem: function (key) {
+      if (this.cart[key].qty > 1) this.cart[key].qty--;
+      else this.cart.splice(key, 1);
+    },
   },
 };
 </script>
