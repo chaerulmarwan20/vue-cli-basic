@@ -18,7 +18,7 @@ export default {
   },
   filters: {
     currencyFormat: function (value, prefix, precision) {
-      return prefix + Number.parseFloat(Number(value)).toFixed(precision);
+      return prefix + Number.parseFloat(value).toFixed(precision);
     },
   },
 };
